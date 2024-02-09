@@ -111,37 +111,34 @@ const showMemes = (datas) =>{
 // }
 
 function addMeme() {
-  const title = document.getElementById('title-input').value;
-  const imageInput = document.getElementById('image-upload');
-  const selectedImage = imageInput.files[0];
-  const id = localStorage.getItem('user_id')
-  const ab = {
-      username: "evaan321",
-      id : parseInt(id)
-  }
+    const title = document.getElementById('title-input').value;
+    const imageInput = document.getElementById('image-upload');
+    const selectedImage = imageInput.files[0];
+    const userId = localStorage.getItem('user_id');
   
-  console.log(id)
-  const formData = new FormData();
-
+   
+    
+    const user = {
+      id: userId,
+     
+    };
   
-  formData.append('title', title);
-  formData.append('photo', selectedImage);
-  formData.append('user',null);
- 
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('photo', selectedImage);
+    formData.append('user',user.id)
+    
   
-
-
-  fetch("http://127.0.0.1:8000/Home", {
+    fetch("http://127.0.0.1:8000/Home/", {
       method: "POST",
-     
-      body: JSON.stringify(formData) 
-  })
-  .then(response => response.json())
-  .then(data => {
+      body: formData,
+      
+    })
+    .then(response => response.json())
+    .then(data => {
       console.log(data);
-     
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.log('Error adding meme:', error);
-  });
-}
+    });
+  }

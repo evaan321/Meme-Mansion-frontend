@@ -291,10 +291,13 @@ Bootstrap 5 Dashboard Admin Template
                                     <div class="tab-pane fade show active" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                                         <h6 class="mb-4">User Profile</h6>
 
-                                        <form class="custom-form profile-form" action="#" method="post" role="form">
-                                            <input class="form-control" type="text" name="profile-name" id="profile-name" placeholder="John Doe">
+                                        <form class="custom-form profile-form" action="#" onsubmit="profileUpdate(event)" role="form">
+                                            <input class="form-control" type="text" name="profile-name" id="username" placeholder="Username">
+                                            <input class="form-control" type="text" name="profile-name" id="first-name" placeholder="First Name">
+                                            <input class="form-control" type="text" name="profile-name" id="last-name" placeholder="Last Name">
+                                            
 
-                                            <input class="form-control" type="email" name="profile-email" id="profile-email" placeholder="Johndoe@gmail.com">
+                                            <input class="form-control" type="email" name="profile-email" id="email" placeholder="Email">
 
                                             <div class="input-group mb-1">
                                                 <img src="images/profile/senior-man-white-sweater-eyeglasses.jpg" class="profile-image img-fluid" alt="">
@@ -303,11 +306,11 @@ Bootstrap 5 Dashboard Admin Template
                                             </div>
 
                                             <div class="d-flex">
-                                                <button type="button" class="form-control me-3">
+                                                <!-- <button type="button" class="form-control me-3">
                                                     Reset
-                                                </button>
+                                                </button> -->
 
-                                                <button type="submit" class="form-control ms-2">
+                                                <button on type="submit" class="form-control ms-2">
                                                     Update
                                                 </button>
                                             </div>
@@ -405,6 +408,7 @@ Bootstrap 5 Dashboard Admin Template
         </div>
 
         <!-- JAVASCRIPT FILES -->
+        <script src="profile.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/custom.js"></script>

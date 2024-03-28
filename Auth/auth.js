@@ -57,11 +57,13 @@ const handleLogin = (event)=>{
     })
     .then ((res)=> res.json())
     .then ((data)=>{
-        console.log(data)
+        
         if(data.token && data.user_id){
             localStorage.setItem("token", data.token);
             localStorage.setItem("user_id",data.user_id);
-            window.location.href = "/index.html"
+            window.location = "/index.html"
+            console.log('working')
         }
     })
 }
+

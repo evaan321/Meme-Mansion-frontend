@@ -1,8 +1,11 @@
-
+var current = 1
 const yo = (data) => {
+
+  
 console.log(data)
     const parent = document.getElementById('parentCard')
-    data.forEach(data =>{
+    parent.innerHTML=''
+    data.results.forEach(data =>{
         const catparent = document.createElement('div')
       catparent.classList.add('allcats')
         if (data.category){
@@ -21,7 +24,7 @@ console.log(data)
     
                           <div class="card">
                           <h5 class="card-title">${data.title}</h5>
-                          <p>By <span class="text-dark h5">${data?.username}</span> </p>
+                          <p>By <span class="text-dark h5">${data.user? data.user.username : 'Anonymous'}</span> </p>
                           <img src="${data.photo}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <div id="allcats">
@@ -59,99 +62,57 @@ console.log(data)
      `
 parent.appendChild(div)
     })
-}
+    const paginationContainer = document.getElementById('paginationContainer');
+    paginationContainer.innerHTML = ''
 
-
-const showMemes = (data) => {
-    console.log(data)
-  const parent = document.getElementById('parentCard')
-  data.forEach((data) => {
-      console.log(data)
-      
-      
-
-      const div = document.createElement('div')
-      // Change id to class for allcats
-      const catparent = document.createElement('div')
-      catparent.classList.add('allcats')
-
-      data.category.forEach((cat) => {
-          const btn = document.createElement('button')
-          btn.classList = 'btn btn-light'
-          btn.innerText = `${cat.categoryName}`
-          catparent.appendChild(btn)
-      })
-
-      catparent.innerHTML = `
-          <div class="col">
-              <div class="col">
-                  <div class="card">
-                      <h5 class="card-title">${data.title}</h5>
-                      <p>By <span class="text-dark h5">${data.user.username}</span> </p>
-                      <img src="${data.photo}" class="card-img-top" alt="...">
-                      <div class="card-body">
-                          <!-- Use class instead of id for allcats -->
-                          <div class="allcats">
-                              ${catparent.innerHTML}
-                          </div>
-                          <div class="like-button">
-                              <div class="heart-bg">
-                                  <div class="heart-icon"></div>
-                              </div>
-                              <div class="likes-amount">7</div>
-                              <div class="ms-5">
-                                  <i class="fa-regular fa-message fa-2x"></i>
-                                  <span style="color: #888;">5</span>
-                                  <a href=""><span style="color: #888;">Comments</span></a>
-                              </div>
-                              <div class="ms-5">
-                                  <i class="fa-solid fa-share fa-2x"></i>
-                                  <a href=""><span style="color: #888;">Share</span></a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+    if (data.next && data.previous ==null){
+      paginationContainer.innerHTML ='<button onclick="paginator(1)" class="btn-success">Next</button>'
+    }
+    else if (data.next == null && data.previous){
+      paginationContainer.innerHTML ='<button onclick="paginator(2)" class="btn-success">Previous</button>'
+    }
+    else {
+      paginationContainer.innerHTML =` 
+      <button onclick="paginator(2)" class="btn-success">Previous</button>
+      <button onclick="paginator(1)" class="btn-success">Next</button>
       `
+    }
+  
+    
+}
 
-      parent.appendChild(catparent)
-  })
+function paginator(a){
+
+if (a==1 && current){
+  current++;
+  
+  
+  myfetch(current)
+  window.location = '#'
+}
+else {
+
+    current--;
+    
+    
+    myfetch(current)
+    window.location = '#'
+  
 }
 
 
-
-// function addMeme(){
-
-//   const title = document.getElementById('title-input').value
-//   const image = document.getElementById('image-upload')
-//   const selectedimage = image.files[0]
-  
-//    const data = {
-//     title: title,
-//     photo: selectedimage,
-//    };
-//    console.log(data)
-
-//    fetch("http://127.0.0.1:8000/",
-//    {
-//     method:"POST",
-//     headers:{
-//       "content-type":"application/json"
-//     },
-//     body:JSON.stringify(data)
-  
-//    })
-//    .then((res)=> res.json())
-
-//    .then((data)=>{
-//     console.log(data)
-//    })
-  
+}
 
 
+function myfetch(pg){
+  fetch(`http://127.0.0.1:8000/all/?page=${pg}`)
+  .then ((res)=> res.json())
+  .then ((data)=>yo(data))
+}
 
-// }
+myfetch(current)
+
+
 
 fetch('http://127.0.0.1:8000/category/')
 .then(response => response.json())
@@ -168,6 +129,7 @@ fetch('http://127.0.0.1:8000/category/')
   data.forEach(category => {
     const option = document.createElement('option');
     option.text = category.categoryName;
+    option.value = category.id;
     categorySelect.add(option);
   });
 })
@@ -178,12 +140,17 @@ function addMeme() {
     const selectedImage = imageInput.files[0];
     const userId = localStorage.getItem('user_id');
     const categorySelect = document.getElementById('category-select');
-    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => ({
-        id: parseInt(option.value), // Assuming option.value contains the category ID
-        categoryName: option.text,
-      }));
+
+    
+     console.log(categorySelect)
+    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => (
+     
+      parseInt(option.value)
+    ));
+   
+   
   
-  
+   console.log(selectedCategories)
    
 
     
@@ -196,7 +163,11 @@ function addMeme() {
     formData.append('title', title);
     formData.append('photo', selectedImage);
     formData.append('user',user.id);
-    formData.append('categories',JSON.stringify(selectedCategories))
+
+    for (i=0;i<selectedCategories.length;i++){
+      formData.append('category',selectedCategories[i])
+    }
+    
     
   
     fetch("http://127.0.0.1:8000/Home/", {
@@ -207,6 +178,7 @@ function addMeme() {
     .then(response => response.json())
     .then(data => {
       console.log(data);
+      window.location = 'index.html'
     })
     .catch(error => {
       console.log('Error adding meme:', error);
@@ -214,10 +186,24 @@ function addMeme() {
   }
 
 
- function myfetch(){
-    fetch("http://127.0.0.1:8000/Home/")
-    .then ((res)=> res.json())
-    .then ((data)=>yo(data))
-  }
+ 
 
-  myfetch()
+
+  const handleLogout = () =>{
+    const token = localStorage.getItem("token")
+      fetch("http://127.0.0.1:8000/logout/",{
+  
+      method:"POST",
+      headers: {
+          Authorization : `Token ${token}`,
+          "Content-Type" : "application/json",
+      },
+      }
+     )
+     .then ((res) => res.json)
+     .then ((data) => {
+      console.log(data)
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_id")
+     })
+  }

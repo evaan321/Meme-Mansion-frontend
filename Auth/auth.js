@@ -17,14 +17,14 @@ const handleReg= (event)=>{
     if (password === confirm_password){
         if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)){
 
-            fetch("http://127.0.0.1:8000/register/",{
+            fetch("https://meme-mansion-backend.onrender.com/register/",{
                 method : "POST",
                 headers:{"content-type": "application/json"},
                 body: JSON.stringify(info)
                 
             })
             .then((res)=> res.json())
-            .then((data)=>console.log(data))
+            .then((data)=>alert('Check email for confirmation'))
         }
         else{
             alert("pass must contain Minimum eight characters, at least one letter, one number and one special character")
@@ -49,7 +49,7 @@ const handleLogin = (event)=>{
     const username = document.getElementById('login-username').value
     const password = document.getElementById('login-password').value
 
-    fetch('http://127.0.0.1:8000/login/',{
+    fetch('https://meme-mansion-backend.onrender.com/login/',{
 
     method: "POST",
     headers: {"content-type" : "application/json"},

@@ -9,7 +9,7 @@ function profileUpdate(event) {
 
     const token = localStorage.getItem('token');
 
-    fetch('http://127.0.0.1:8000/profile/update/', {
+    fetch('https://meme-mansion-backend.onrender.com/profile/update/', {
         method: 'PUT',
         headers: {
             'Authorization': `Token ${token}` // Use 'Token' instead of 'token'

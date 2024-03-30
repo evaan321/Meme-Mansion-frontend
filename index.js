@@ -17,6 +17,7 @@ console.log(data)
             })
         }
      
+
         
      const div = document.createElement('div')
      div.classList.add('col')
@@ -24,13 +25,14 @@ console.log(data)
     
                           <div class="card">
                           <h5 class="card-title">${data.title}</h5>
-                          <p>By <span class="text-dark h5">${data.user? data.user.username : 'Anonymous'}</span> </p>
-                          <img src="${data.photo}" class="card-img-top" alt="...">
+                          <p>By <span class="text-dark h5">${data.username? data.username : 'Anonymous'}</span> </p>
+                          <img src="${data.photo}" class="card-img-top" alt="..."  style="height: 600px;">
                             <div class="card-body">
                                 <div id="allcats">
                                 ${catparent.innerHTML}
                                     
-                                </div>
+                                </div> 
+                                <!--
                                 <div class="like-button">
                                     <div class="heart-bg">
                                       <div class="heart-icon"></div>
@@ -105,16 +107,80 @@ else {
 
 
 function myfetch(pg){
-  fetch(`http://127.0.0.1:8000/all/?page=${pg}`)
+  fetch(`https://meme-mansion-backend.onrender.com/all/?page=${pg}`)
   .then ((res)=> res.json())
   .then ((data)=>yo(data))
 }
 
 myfetch(current)
 
+function onSearch() {
+  var searchedData = [];
+  var sp = 1;
 
 
-fetch('http://127.0.0.1:8000/category/')
+  function fetchData() {
+    fetch(`https://meme-mansion-backend.onrender.com/all/?page=${sp}`)
+      .then((res) => res.json())
+      .then((data) => {
+        data.results.forEach((d) => {
+          let found = d.category.find((o) => o.categoryName === 'Random');
+          if (found) {
+            searchedData.push(d);
+          }
+        });
+
+       
+
+        if (data.next !== null) {
+          sp++; 
+          fetchData(); 
+
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  fetchData(); 
+ 
+  searching(searchedData)
+  
+}
+
+
+
+// function onSearch(){
+//   var searchedData = []
+//   var sp = 1
+// while(1){
+//   fetch(`http://127.0.0.1:8000/all/?page=${sp}`)
+//   .then ((res)=> res.json())
+//   .then ((data)=>{
+
+//     if (data.next == null){break}
+
+//      data.results.forEach(d =>{
+      
+//       let found = d.category.find(o => o.categoryName == 'Random')
+//       if (found){
+//         searchedData.push(d)
+//       }
+
+//      })
+
+//      console.log(searchedData)
+
+//   })
+// }
+  
+
+// }
+
+
+
+fetch('https://meme-mansion-backend.onrender.com/category/')
 .then(response => response.json())
 .then(data => {
   const categorySelect = document.getElementById('category-select');
@@ -126,7 +192,7 @@ fetch('http://127.0.0.1:8000/category/')
   
 
  
-  data.forEach(category => {
+  data.results.forEach(category => {
     const option = document.createElement('option');
     option.text = category.categoryName;
     option.value = category.id;
@@ -152,7 +218,8 @@ function addMeme() {
   
    console.log(selectedCategories)
    
-
+   
+ 
     
     const user = {
       id: userId,
@@ -170,7 +237,7 @@ function addMeme() {
     
     
   
-    fetch("http://127.0.0.1:8000/Home/", {
+    fetch("https://meme-mansion-backend.onrender.com/Home/", {
       method: "POST",
       body: formData,
       
@@ -191,7 +258,7 @@ function addMeme() {
 
   const handleLogout = () =>{
     const token = localStorage.getItem("token")
-      fetch("http://127.0.0.1:8000/logout/",{
+      fetch("https://meme-mansion-backend.onrender.com/logout/",{
   
       method:"POST",
       headers: {
@@ -205,5 +272,7 @@ function addMeme() {
       console.log(data)
       localStorage.removeItem("token");
       localStorage.removeItem("user_id")
+      alert('Logout Successful')
+      window.location = "Auth/login.html"
      })
   }

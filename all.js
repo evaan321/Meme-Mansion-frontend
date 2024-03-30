@@ -161,6 +161,41 @@ function showProfile(data){
 
          })
         }
+        else {
+            const userinfo = document.getElementById('profiles')
+                 userinfo.innerHTML = `
+                 <p class="d-flex flex-wrap mb-2">
+                                                <strong>Username:</strong>
+    
+                                                <span>Annonymous</span>
+                                            </p>
+    
+                                            <p class="d-flex flex-wrap mb-2">
+                                                <strong>Email:</strong>
+                                                
+                                                <a href="#">
+                                                Annonymous@gmail.com
+                                                </a>
+                                            </p>
+    
+                                            
+                                            <p class="d-flex flex-wrap mb-2">
+                                                <strong>First Name:</strong>
+    
+                                                <a href="#">
+                                                    ${'N/A'}
+                                                </a>
+                                            </p>
+                                            <p class="d-flex flex-wrap mb-2">
+                                                <strong>First Name:</strong>
+    
+                                                <a href="#">
+                                                    ${ 'N/A'}
+                                                </a>
+                                            </p>
+                                          
+                 `
+        }
         
         }
 

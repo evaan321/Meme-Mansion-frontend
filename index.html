@@ -23,15 +23,7 @@
         <link href="css/apexcharts.css" rel="stylesheet">
 
         <link href="css/tooplate-mini-finance.css" rel="stylesheet">
-<!--
 
-Tooplate 2135 Mini Finance
-
-https://www.tooplate.com/view/2135-mini-finance
-
-Bootstrap 5 Dashboard Admin Template
-
--->
 
 <style>
   .pagination-container {
@@ -177,7 +169,14 @@ Bootstrap 5 Dashboard Admin Template
                                     Profile
                                 </a>
                             </li>
-
+                            <li>
+                              <div class="category-section">
+                                <h3>Categories</h3>
+                                <ul id="category-list">
+                                   
+                                </ul>
+                            </div>
+                            </li>
                        
 
                           
@@ -188,6 +187,7 @@ Bootstrap 5 Dashboard Admin Template
                                     Logout
                                 </a>
                             </li>
+                           
                         </ul>
                     </div>
                 </nav>
@@ -220,7 +220,10 @@ Bootstrap 5 Dashboard Admin Template
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/apexcharts.min.js"></script>
         <script src="js/custom.js"></script>
-
+        <script>
+          // Fetch categories from the backend API
+         
+      </script>
         <script>
             const heartIcon = document.querySelector(".like-button .heart-icon");
 const likesAmountLabel = document.querySelector(".like-button .likes-amount");
@@ -237,6 +240,7 @@ heartIcon.addEventListener("click", () => {
 
   likesAmountLabel.innerHTML = likesAmount;
 });
+
         </script>
         <script type="text/javascript">
             var options = {

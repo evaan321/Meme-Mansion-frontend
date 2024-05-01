@@ -1,11 +1,22 @@
 var current = 1
-const yo = (data) => {
+const yo = (data,catName=null) => {
 
   
-console.log(data)
+console.log(data,)
     const parent = document.getElementById('parentCard')
     parent.innerHTML=''
-    data.results.forEach(data =>{
+    let freshdata = data.results
+    if (catName){
+      
+       freshdata = data.results.filter(meme => {
+
+        return meme.category.some(cat => cat.categoryName === catName)
+       })
+      
+       console.log(freshdata)
+    }
+  
+   freshdata.forEach(data =>{
         const catparent = document.createElement('div')
       catparent.classList.add('allcats')
         if (data.category){
@@ -32,12 +43,15 @@ console.log(data)
                                 ${catparent.innerHTML}
                                     
                                 </div> 
-                                <!--
                                 <div class="like-button">
-                                    <div class="heart-bg">
-                                      <div class="heart-icon"></div>
-                                    </div>
-                                    <div class="likes-amount">7</div>
+                                <div class="heart-bg">
+                                  <div class="heart-icon"></div>
+                                </div>
+                                <div class="likes-amount">${data.likes.length}</div>
+
+                             
+                                <!--
+                               
                                     
                                     <div class="ms-5">
                                         <i class="fa-regular fa-message fa-2x"></i>
@@ -106,10 +120,15 @@ else {
 }
 
 
-function myfetch(pg){
+function myfetch(pg,catName=null){
   fetch(`https://meme-mansion-backend.onrender.com/all/?page=${pg}`)
   .then ((res)=> res.json())
-  .then ((data)=>yo(data))
+  .then ((data)=>{
+    
+     yo(data,catName)
+  
+  
+  })
 }
 
 myfetch(current)
@@ -276,3 +295,38 @@ function addMeme() {
       window.location = "Auth/login.html"
      })
   }
+
+
+  function fetchCategories() {
+    fetch('https://meme-mansion-backend.onrender.com/category/')
+        .then(response => response.json())
+        .then(data => {
+            const categoryList = document.getElementById('category-list');
+
+            // Clear previous categories
+            categoryList.innerHTML = '';
+
+            // Add each category to the list
+            data.results.forEach(category => {
+                const listItem = document.createElement('li');
+                listItem.textContent = category.categoryName;
+                
+                listItem.addEventListener('click', () => {
+                    // Handle category selection
+                   
+                myfetch(current,listItem.textContent)
+                
+                });
+                categoryList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Error fetching categories:', error));
+}
+
+
+
+
+
+window.onload = function() {
+    fetchCategories();
+};

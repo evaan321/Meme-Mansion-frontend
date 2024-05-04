@@ -45,7 +45,7 @@ console.log(data,)
                                 </div> 
                                 <div class="like-button">
                                 <div class="heart-bg">
-                                  <div class="heart-icon"></div>
+                                  <div onclick = "likeMeme(${data.id})" class="heart-icon"></div>
                                 </div>
                                 <div class="likes-amount">${data.likes.length}</div>
 
@@ -121,7 +121,7 @@ else {
 
 
 function myfetch(pg,catName=null){
-  fetch(`https://meme-mansion-backend.onrender.com/all/?page=${pg}`)
+  fetch(`http://127.0.0.1:8000/all/?page=${pg}`)
   .then ((res)=> res.json())
   .then ((data)=>{
     
@@ -139,7 +139,7 @@ function onSearch() {
 
 
   function fetchData() {
-    fetch(`https://meme-mansion-backend.onrender.com/all/?page=${sp}`)
+    fetch(`http://127.0.0.1:8000/all/?page=${sp}`)
       .then((res) => res.json())
       .then((data) => {
         data.results.forEach((d) => {
@@ -330,3 +330,37 @@ function addMeme() {
 window.onload = function() {
     fetchCategories();
 };
+
+
+function likeMeme(memeId) {
+  
+  
+  const userId = localStorage.getItem('user_id');
+
+ 
+  fetch(`http://127.0.0.1:8000/memes/${memeId}/like/`, {
+      method: 'POST',
+      headers: {
+          
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({userId:userId}),
+      
+
+    
+     
+  }
+  
+)
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Failed to like meme');
+      }
+    
+      console.log('Meme liked successfully');
+      
+  })
+  .catch(error => console.error('Like failed:', error));
+  alert('Liked Successfully')
+  window.location.reload()
+}

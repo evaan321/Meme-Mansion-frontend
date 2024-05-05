@@ -121,7 +121,7 @@ else {
 
 
 function myfetch(pg,catName=null){
-  fetch(`http://127.0.0.1:8000/all/?page=${pg}`)
+  fetch(`https://meme-mansion-backend.onrender.com/all/?page=${pg}`)
   .then ((res)=> res.json())
   .then ((data)=>{
     
@@ -139,7 +139,7 @@ function onSearch() {
 
 
   function fetchData() {
-    fetch(`http://127.0.0.1:8000/all/?page=${sp}`)
+    fetch(`https://meme-mansion-backend.onrender.com/all/?page=${sp}`)
       .then((res) => res.json())
       .then((data) => {
         data.results.forEach((d) => {
@@ -334,11 +334,16 @@ window.onload = function() {
 
 function likeMeme(memeId) {
   
-  
-  const userId = localStorage.getItem('user_id');
+  if (localStorage.getItem('user_id')){
+    const userId = localStorage.getItem('user_id');
+  }
+  else {
+    alert('Please Login to rate memes')
+    return;
+  }
 
  
-  fetch(`http://127.0.0.1:8000/memes/${memeId}/like/`, {
+  fetch(`https://meme-mansion-backend.onrender.com/memes/${memeId}/like/`, {
       method: 'POST',
       headers: {
           
@@ -361,6 +366,6 @@ function likeMeme(memeId) {
       
   })
   .catch(error => console.error('Like failed:', error));
-  alert('Liked Successfully')
+  alert('Thank you for rating it')
   window.location.reload()
 }

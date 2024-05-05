@@ -149,7 +149,7 @@ function showProfile(data){
                                                 </a>
                                             </p>
                                             <p class="d-flex flex-wrap mb-2">
-                                                <strong>First Name:</strong>
+                                                <strong>Last Name:</strong>
     
                                                 <a href="#">
                                                     ${d.last_name? d.last_name : 'N/A'}
@@ -187,7 +187,7 @@ function showProfile(data){
                                                 </a>
                                             </p>
                                             <p class="d-flex flex-wrap mb-2">
-                                                <strong>First Name:</strong>
+                                                <strong>Last Name:</strong>
     
                                                 <a href="#">
                                                     ${ 'N/A'}

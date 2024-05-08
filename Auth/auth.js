@@ -64,6 +64,9 @@ const handleLogin = (event)=>{
             window.location = "/index.html"
             console.log('working')
         }
+        else {
+            alert("Incorrect Username or password")
+        }
     })
 }
 

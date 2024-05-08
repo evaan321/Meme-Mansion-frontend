@@ -308,8 +308,9 @@ function addMeme() {
 
             // Add each category to the list
             data.results.forEach(category => {
-                const listItem = document.createElement('li');
+                const listItem = document.createElement('button');
                 listItem.textContent = category.categoryName;
+                listItem.classList='d-block btn'
                 
                 listItem.addEventListener('click', () => {
                     // Handle category selection
@@ -333,9 +334,9 @@ window.onload = function() {
 
 
 function likeMeme(memeId) {
-  
+  var userId= null
   if (localStorage.getItem('user_id')){
-    const userId = localStorage.getItem('user_id');
+   userId = localStorage.getItem('user_id');
   }
   else {
     alert('Please Login to rate memes')
